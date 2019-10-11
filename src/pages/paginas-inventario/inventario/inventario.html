@@ -1,0 +1,689 @@
+<ion-header>
+  <ion-fab top left>
+    <button id="fabIcon1" style="background-color: transparent" (click)="voltarInicial()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <div class="header_main">
+    <ion-fab top right style="margin: auto 45px;">
+      <button *ngIf="revisaoRapidaAtivado" ion-fab class="fabbutton local-botao" (click)="editarInventario()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+      <button *ngIf="!revisaoRapidaAtivado" ion-fab class="fabbutton local-botao" (click)="alterarConfiguracao()">
+        <ion-icon name="construct"></ion-icon>
+      </button>
+      <button ion-fab class="fabbutton" (click)="salvarDados()">
+        <img class="fabimage" src="assets/img/diskette.png" menuClose="">
+      </button>
+    </ion-fab>
+    <ion-fab top right>
+      <button style="background-color: transparent" (click)="presentPopover($event)">
+        <ion-icon id="fabIcon" name="more"></ion-icon>
+      </button>
+    </ion-fab>
+    <h1 id="cor-revisao">R{{tipoDeRevisao}} - Inventário</h1>
+  </div>
+
+
+</ion-header>
+
+<ion-content padding>
+  <ion-row class="fa-search">
+    <div class="col col-8">
+      <div class="fa-inputgroup1">
+        <input (keyup)="onKey()" [(ngModel)]="codigo" value="codigo" type="text" name="codigo1" class="text-to-upper">
+      </div>
+    </div>
+    <div class="col col-4">
+      <div class="fa-inputgroup1">
+        <input [(ngModel)]="incorporacao" value="{{incorporacao}}" type="text" name="codigo2" class="text-to-upper">
+      </div>
+    </div>
+    <div class="col col-12 controls">
+      <div *ngIf="resposta == undefined" class="label-status">?</div>
+      <div *ngIf="resposta != undefined" class="label-status">{{status}}</div>
+      <div class="label-status" (click)="ficticioClick()">F</div>
+      <ion-icon *ngIf="rfidStatus" class="icons-status" name="qr-scanner" (click)="chamarRfid()"></ion-icon>
+      <ion-icon *ngIf="!rfidStatus" class="icons-status" name="barcode" (click)="chamaBarCode()"></ion-icon>
+      <ion-icon class="icon-pesquisa" name="search" (click)="buscaPatrimonioCodigo()"></ion-icon>
+      <ion-fab top right>
+        <ion-item style="background-color: transparent; " no-lines>
+          <ion-toggle #toggle color="positive" (ionChange)="showToast(toggle.checked)" style="zoom: 1.1" disabled>
+          </ion-toggle>
+        </ion-item>
+      </ion-fab>
+      <h2 style="display: unset; margin: 0 10%">{{leituraEscolhida}}</h2>
+    </div>
+  </ion-row>
+  <div class="container">
+    <div class="fa-list">
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{campoCodAnterior}}</span>
+          <ion-icon *ngIf="!itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('codAnterior')"></ion-icon>
+          <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="codAnterior" class="fa-inputgroup text-to-upper"
+            type="text" placeholder="Insira o código anterior aqui" value="{{resposta?.codigoAnterior}}">{{codAnterior}}
+          </ion-textarea>
+          <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="codAnterior"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" placeholder="Insira o código anterior aqui"
+            value="{{resposta?.codigoAnterior}}">{{codAnterior}}
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit" (click)="buscaPatrimonioTags('codigoAnterior', codAnterior)">
+            <ion-icon class="icon-editar" name="search"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaFilial" class="fa-list_title" (click)="fixaCampo('filialFalse')">
+            {{campoFilial}} <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('filialFalse')"></ion-icon>
+          </span>
+          <span *ngIf="fixaFilial" class="fa-list_title fixado" (click)="fixaCampo('filialTrue')">{{campoFilial}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('filialTrue')">
+            </ion-icon></span>
+          <span *ngIf="filialSelecionada?.nome" class="fa-list_status">{{filialSelecionada?.nome}}</span>
+          <span *ngIf="!filialSelecionada?.nome" class="fa-list_status">{{resposta?.Filial}}</span>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('filial')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('filial')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('filial')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarFilial()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixEspecie" class="fa-list_title" (click)="fixaCampo('especieFalse')">{{campoEspecie}} <ion-icon *ngIf="!itemBaixado"
+              class="fix-campos" name="unlock" (click)="fixaCampo('especieFalse')"></ion-icon></span>
+          <span *ngIf="fixEspecie" class="fa-list_title fixado" (click)="fixaCampo('especieTrue')">{{campoEspecie}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('especieTrue')"></ion-icon></span>
+          <span *ngIf="especieSelecionada?.nome" class="fa-list_status">{{especieSelecionada?.nome}}</span>
+          <span *ngIf="!especieSelecionada?.nome" class="fa-list_status">{{resposta?.Especie}}</span>
+        </div>
+        <div class="fa-list_control"  *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('especie')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('especie')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('especie')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarEspecie()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaDescricao" class="fa-list_title" (click)="fixaCampo('descricaoFalse')">{{campoDescricao}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('descricaoFalse')"></ion-icon></span>
+          <span *ngIf="fixaDescricao" class="fa-list_title fixado"
+            (click)="fixaCampo('descricaoTrue')">{{campoDescricao}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('descricaoTrue')"></ion-icon></span>
+          <ion-textarea disabled *ngIf="!buscaFeita" [(ngModel)]="descricao" class="fa-inputgroup text-to-upper"
+            type="text" placeholder="Insira a descrição aqui" value="{{especieSelecionada?.nome}}"></ion-textarea>
+          <ng-container *ngIf="buscaFeita && !gravouPatrimonio && !itemBaixado">
+            <ion-textarea [(ngModel)]="descricao" *ngIf="especieSelecionada?.nome && !mostraDescricao"
+              class="fa-inputgroup text-to-upper" type="text" placeholder="Insira a descrição aqui 1"
+              value="{{especieSelecionada?.nome}}"></ion-textarea>
+            <ion-textarea [(ngModel)]="descricao" *ngIf="!especieSelecionada?.nome && !mostraDescricao"
+              class="fa-inputgroup text-to-upper" type="text" placeholder="Insira a descrição aqui 2"
+              value="{{resposta?.Especie}}"></ion-textarea>
+            <ion-textarea [(ngModel)]="descricao" *ngIf="mostraDescricao" class="fa-inputgroup text-to-upper"
+              type="text" placeholder="Insira a descrição aqui" value="{{patrimonio?.descricao}}"></ion-textarea>
+          </ng-container>
+          <ng-container *ngIf="buscaFeita && gravouPatrimonio || itemBaixado">
+            <ion-textarea disabled [(ngModel)]="descricao" *ngIf="especieSelecionada?.nome"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" placeholder="Insira a descrição aqui"
+              value="{{especieSelecionada?.nome}}"></ion-textarea>
+            <ion-textarea disabled [(ngModel)]="descricao" *ngIf="!especieSelecionada?.nome && !mostraDescricao"
+              class="fa-inputgroup text-to-upper" type="text" placeholder="Insira a descrição aqui"
+              value="{{resposta?.Especie}}"></ion-textarea>
+          </ng-container>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('descricao')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('descricao')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('descricao')">
+            </ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item" *ngFor="let att of propriedades; let idx = index">
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{att?.nome}}</span>
+          <ion-textarea #tt *ngIf="att?.id_tipoDado!=4 && att?.id_tipoDado!=2" class="fa-inputgroup text-to-upper"
+            value="{{att?.texto}}" (ionChange)="change(tt,att)"></ion-textarea>
+          <ion-list *ngIf="att?.id_tipoDado==4" style="margin-bottom:-10px">
+            <div>
+              <ion-item no-lines>
+                <ion-select style="margin-right: 20rem; display: contents">
+                  <ng-container *ngIf="att?.id_tipoDado==4">
+                    <ng-container *ngFor="let att2 of att.lookUp; let idx2 = index">
+                      <ion-option class="fa-inputgroup" #test selected="{{(att2?.valor == att?.texto).toString()}}"
+                        (ionSelect)="change(att2, att)">
+                        {{att2?.valor}}</ion-option>
+                    </ng-container>
+                  </ng-container>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-list>
+          <ng-container *ngIf="att?.id_tipoDado==2">
+            <ng-container *ngIf="teste1[0] != undefined && teste1[0].id_propriedade == att?.id_propriedade">
+              <span #toggle class="fa-list_status" style="font-size: x-large">{{teste1[0]?.texto}}</span>
+              <ion-icon *ngIf="!itemBaixado" class="icon1" name="remove-circle" (click)="decrement(toggle, 1)"></ion-icon>
+              <ion-icon *ngIf="!itemBaixado" class="icon2" name="add-circle" (click)="increment(toggle, 1)"></ion-icon>
+            </ng-container>
+            <ng-container *ngIf="teste1[1] != undefined && teste1[1].id_propriedade == att?.id_propriedade">
+              <span #toggle class="fa-list_status" style="font-size: x-large">{{teste1[1]?.texto}}</span>
+              <ion-icon *ngIf="!itemBaixado" class="icon1" name="remove-circle" (click)="decrement(toggle, 2)"></ion-icon>
+              <ion-icon *ngIf="!itemBaixado" class="icon2" name="add-circle" (click)="increment(toggle, 2)"></ion-icon>
+            </ng-container>
+            <ng-container *ngIf="teste1[2] != undefined && teste1[2].id_propriedade == att?.id_propriedade">
+              <span #toggle class="fa-list_status" style="font-size: x-large">{{teste1[2]?.texto}}</span>
+              <ion-icon *ngIf="!itemBaixado" class="icon1" name="remove-circle" (click)="decrement(toggle, 3)"></ion-icon>
+              <ion-icon *ngIf="!itemBaixado" class="icon2" name="add-circle" (click)="increment(toggle, 3)"></ion-icon>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+      <!-- <div class="fa-list_item">
+              <div class="fa-list_info">
+                <span class="fa-list_title">Revestimento</span>
+                <div class="fa-list_select">
+                  <select name='revestimento'>
+                    <option value="value">Fórmica</option>
+                    <option value="value">Revestimento 2</option>
+                    <option value="value">Revestimento</option>
+                  </select>
+                </div>
+              </div>
+            </div>-->
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{campoMarca}}</span>
+          <ion-icon *ngIf="!itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('marca')"></ion-icon>
+          <ion-textarea disabled *ngIf="!buscaFeita" [(ngModel)]="marca" class="fa-inputgroup text-to-upper" type="text"
+            name="marca" placeholder="Insira a marca aqui" value="{{resposta?.marca}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="buscaFeita && !gravouPatrimonio && !itemBaixado" [(ngModel)]="marca" class="fa-inputgroup text-to-upper"
+            type="text" name="marca" placeholder="Insira a marca aqui" value="{{resposta?.marca}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="buscaFeita && gravouPatrimonio || itemBaixado" disabled [(ngModel)]="marca"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" name="marca" placeholder="Insira a marca aqui"
+            value="{{resposta?.marca}}">
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('marca')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('marca')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('marca')">
+            </ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="fa-list_item">
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{campoModelo}}</span>
+          <ion-icon *ngIf="!itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('modelo')"></ion-icon>
+          <ion-textarea disabled *ngIf="!buscaFeita" [(ngModel)]="modelo" class="fa-inputgroup text-to-upper"
+            type="text" name="modelo" placeholder="Insira o modelo aqui" value="{{resposta?.modelo}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="buscaFeita && !gravouPatrimonio && !itemBaixado" [(ngModel)]="modelo" class="fa-inputgroup text-to-upper"
+            type="text" name="modelo" placeholder="Insira o modelo aqui" value="{{resposta?.modelo}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="buscaFeita && gravouPatrimonio || itemBaixado" disabled [(ngModel)]="modelo"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" name="modelo" placeholder="Insira o modelo aqui"
+            value="{{resposta?.modelo}}">
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('modelo')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('modelo')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('modelo')">
+            </ion-icon>
+          </button>
+        </div>
+      </div>
+
+      <div class="fa-list_item">
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{campoSerie}}</span>
+          <ion-icon *ngIf="!itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('serie')"></ion-icon>
+          <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="serie" class="fa-inputgroup text-to-upper" type="text"
+            name="serie" placeholder="Insira a série aqui" value="{{resposta?.serie}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="serie"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" name="serie" placeholder="Insira a série aqui"
+            value="{{resposta?.serie}}">
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control"  *ngIf="!itemBaixado">
+          <button class="icon-edit" (click)="buscaPatrimonioTags('serie', serie)">
+            <ion-icon class="icon-editar" name="search"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaCondicao" class="fa-list_title" (click)="fixaCampo('condicaoFalse')">{{campoCondicao}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('condicaoFalse')"></ion-icon></span>
+          <span *ngIf="fixaCondicao" class="fa-list_title fixado" (click)="fixaCampo('condicaoTrue')">{{campoCondicao}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('condicaoTrue')"></ion-icon></span>
+          <span *ngIf="codicaoSelecionada?.nome" class="fa-list_status">{{codicaoSelecionada?.nome}}</span>
+          <span *ngIf="!codicaoSelecionada?.nome" class="fa-list_status">{{resposta?.Condicao}}</span>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('condicao')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('condicao')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarCondicao()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaCCusto" class="fa-list_title" (click)="fixaCampo('custoFalse')">{{campoCcusto}} <ion-icon *ngIf="!itemBaixado"
+              class="fix-campos" name="unlock" (click)="fixaCampo('custoFalse')"></ion-icon></span>
+          <span *ngIf="fixaCCusto" class="fa-list_title fixado" (click)="fixaCampo('custoTrue')">{{campoCcusto}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('custoTrue')"></ion-icon></span>
+          <span *ngIf="centroCustosSelecionado?.nome" class="fa-list_status">{{centroCustosSelecionado?.nome}}</span>
+          <span *ngIf="!centroCustosSelecionado?.nome" class="fa-list_status">{{resposta?.CentroDeCusto}}</span>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('custos')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('custos')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('custos')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarCentroCustos()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaLocal" class="fa-list_title" (click)="fixaCampo('LocalFalse')">{{campoLocal}} <ion-icon *ngIf="!itemBaixado"
+              class="fix-campos" name="unlock" (click)="fixaCampo('LocalFalse')"></ion-icon></span>
+          <span *ngIf="fixaLocal" class="fa-list_title fixado" (click)="fixaCampo('LocalTrue')">{{campoLocal}} <ion-icon *ngIf="!itemBaixado"
+              class="fix-campos-locked" name="lock" (click)="fixaCampo('LocalTrue')"></ion-icon></span>
+          <span *ngIf="localSelecionado?.nome" class="fa-list_status">{{localSelecionado?.nome}}</span>
+          <span *ngIf="!localSelecionado?.nome" class="fa-list_status">{{resposta?.Local}}</span>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('local')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('local')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('local')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarLocal()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaResponsavel" class="fa-list_title"
+            (click)="fixaCampo('responsaveisFalse')">{{campoResponsavel}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('responsaveisFalse')"></ion-icon></span>
+          <span *ngIf="fixaResponsavel" class="fa-list_title fixado"
+            (click)="fixaCampo('responsaveisTrue')">{{campoResponsavel}} <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock"
+              (click)="fixaCampo('responsaveisTrue')"></ion-icon></span>
+          <span *ngIf="responsavelSelecionado?.nome" class="fa-list_status">{{responsavelSelecionado?.nome}}</span>
+          <span *ngIf="!responsavelSelecionado?.nome" class="fa-list_status">{{resposta?.Responsavel}}</span>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-left" (click)="buscaHistorico('responsaveis')">
+            <ion-icon class="icon-editar-left" name="rewind"></ion-icon>
+          </button>
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('responsaveis')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('responsaveis')">
+            </ion-icon>
+          </button>
+          <button *ngIf="!revisaoRapidaAtivado" class="icon-edit" (click)="buscarResponsavel()">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{campoTag}}</span>
+          <ion-icon *ngIf="!itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('tag')"></ion-icon>
+          <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="tag" class="fa-inputgroup text-to-upper" type="text"
+            name="tag" placeholder="Insira a tag aqui" value="{{resposta?.tag}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="tag"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" name="tag" placeholder="Insira a tag aqui"
+            value="{{resposta?.tag}}">
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('tag')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('tag')"></ion-icon>
+          </button>
+          <button class="icon-edit" (click)="buscaPatrimonioTags('tag', tag)">
+            <ion-icon class="icon-editar" name="search"></ion-icon>
+          </button>
+        </div>
+      </div>
+      <ng-container *ngIf="qtdAuxiliares[0]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux1" class="fa-list_title" (click)="fixaCampo('aux1False')">{{camposAuxiliares[0]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux1False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux1 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux1')">
+            </ion-icon>
+            <span *ngIf="fixaAux1" class="fa-list_title fixado" (click)="fixaCampo('aux1True')">{{camposAuxiliares[0]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux1True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux1 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux1')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux1" class="fa-inputgroup text-to-upper" type="text"
+              name="aux1" placeholder="Insira os dados de {{camposAuxiliares[0]}} aqui" value="{{resposta?.aux1}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux1"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux1"
+              placeholder="Insira os dados de {{camposAuxiliares[0]}} aqui" value="{{resposta?.aux1}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux1')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux1')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX1', aux1)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[1]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux2" class="fa-list_title" (click)="fixaCampo('aux2False')">{{camposAuxiliares[1]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux2False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux2 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux2')">
+            </ion-icon>
+            <span *ngIf="fixaAux2" class="fa-list_title fixado" (click)="fixaCampo('aux2True')">{{camposAuxiliares[1]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux2True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux2 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux2')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux2" class="fa-inputgroup text-to-upper" type="text"
+              name="aux2" placeholder="Insira os dados de {{camposAuxiliares[1]}} aqui" value="{{resposta?.aux2}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux2"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux2"
+              placeholder="Insira os dados de {{camposAuxiliares[1]}} aqui" value="{{resposta?.aux2}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux2')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux2')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX2', aux2)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[2]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux3" class="fa-list_title" (click)="fixaCampo('aux3False')">{{camposAuxiliares[2]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux3False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux3 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux3')">
+            </ion-icon>
+            <span *ngIf="fixaAux3" class="fa-list_title fixado" (click)="fixaCampo('aux3True')">{{camposAuxiliares[2]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux3True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux3 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux3')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux3" class="fa-inputgroup text-to-upper" type="text"
+              name="aux3" placeholder="Insira os dados de {{camposAuxiliares[2]}} aqui" value="{{resposta?.aux3}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux3"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux3"
+              placeholder="Insira os dados de {{camposAuxiliares[2]}} aqui" value="{{resposta?.aux3}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux3')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux3')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX3', aux3)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[3]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux4" class="fa-list_title" (click)="fixaCampo('aux4False')">{{camposAuxiliares[3]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux4False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux4 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux4')">
+            </ion-icon>
+            <span *ngIf="fixaAux4" class="fa-list_title fixado" (click)="fixaCampo('aux4True')">{{camposAuxiliares[3]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux4True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux4 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux4')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux4" class="fa-inputgroup text-to-upper" type="text"
+              name="aux4" placeholder="Insira os dados de {{camposAuxiliares[3]}} aqui" value="{{resposta?.aux4}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux4"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux4"
+              placeholder="Insira os dados de {{camposAuxiliares[3]}} aqui" value="{{resposta?.aux4}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux4')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux4')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX4', aux4)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[4]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux5" class="fa-list_title" (click)="fixaCampo('aux5False')">{{camposAuxiliares[4]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux5False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux5 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux5')">
+            </ion-icon>
+            <span *ngIf="fixaAux5" class="fa-list_title fixado" (click)="fixaCampo('aux5True')">{{camposAuxiliares[4]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux5True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux5 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux5')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux5" class="fa-inputgroup text-to-upper" type="text"
+              name="aux5" placeholder="Insira os dados de {{camposAuxiliares[4]}} aqui" value="{{resposta?.aux5}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux5"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux5"
+              placeholder="Insira os dados de {{camposAuxiliares[4]}} aqui" value="{{resposta?.aux5}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux5')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux5')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX5', aux5)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[5]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux6" class="fa-list_title" (click)="fixaCampo('aux6False')">{{camposAuxiliares[5]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux6False')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux6 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux6')">
+            </ion-icon>
+            <span *ngIf="fixaAux6" class="fa-list_title fixado" (click)="fixaCampo('aux6True')">{{camposAuxiliares[5]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux6True')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux6 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux6')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux6" class="fa-inputgroup text-to-upper" type="text"
+              name="aux6" placeholder="Insira os dados de {{camposAuxiliares[5]}} aqui" value="{{resposta?.aux6}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux6"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux6"
+              placeholder="Insira os dados de {{camposAuxiliares[5]}} aqui" value="{{resposta?.aux6}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux6')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux6')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX6', aux6)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[6]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux7" class="fa-list_title" (click)="fixaCampo('aux7False')">{{camposAuxiliares[6]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux7False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux7 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux7')">
+            </ion-icon>
+            <span *ngIf="fixaAux7" class="fa-list_title fixado" (click)="fixaCampo('aux7True')">{{camposAuxiliares[6]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux7True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux7 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux7')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux7" class="fa-inputgroup text-to-upper" type="text"
+              name="aux7" placeholder="Insira os dados de {{camposAuxiliares[6]}} aqui" value="{{resposta?.aux7}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux7"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux7"
+              placeholder="Insira os dados de {{camposAuxiliares[6]}} aqui" value="{{resposta?.aux7}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux7')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux7')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX7', aux7)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="qtdAuxiliares[7]">
+        <div class="fa-list_item">
+
+          <div class="fa-list_info">
+            <span *ngIf="!fixaAux8" class="fa-list_title" (click)="fixaCampo('aux8False')">{{camposAuxiliares[7]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos" name="unlock" (click)="fixaCampo('aux8False')"></ion-icon></span>
+            <ion-icon *ngIf="!fixaAux8 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux8')">
+            </ion-icon>
+            <span *ngIf="fixaAux8" class="fa-list_title fixado" (click)="fixaCampo('aux8True')">{{camposAuxiliares[7]}}
+              <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('aux8True')"></ion-icon></span>
+            <ion-icon *ngIf="fixaAux8 && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('aux8')">
+            </ion-icon>
+            <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="aux8" class="fa-inputgroup text-to-upper" type="text"
+              name="aux8" placeholder="Insira os dados de {{camposAuxiliares[7]}} aqui" value="{{resposta?.aux8}}">
+            </ion-textarea>
+            <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="aux8"
+              class="fa-inputgroup text-to-upper bloqueado" type="text" name="aux8"
+              placeholder="Insira os dados de {{camposAuxiliares[7]}} aqui" value="{{resposta?.aux8}}">
+            </ion-textarea>
+          </div>
+          <div class="fa-list_control" *ngIf="!itemBaixado">
+
+            <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('aux8')">
+              <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('aux8')">
+              </ion-icon>
+            </button>
+            <button class="icon-edit" (click)="buscaPatrimonioTags('AUX8', aux8)">
+              <ion-icon class="icon-editar" name="search"></ion-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <div class="fa-list_item">
+
+        <div class="fa-list_info">
+          <span *ngIf="!fixaObs" class="fa-list_title" (click)="fixaCampo('obsFalse')">{{campoObervacao}} <ion-icon *ngIf="!itemBaixado"
+              class="fix-campos" name="unlock" (click)="fixaCampo('obsFalse')"></ion-icon></span>
+          <ion-icon *ngIf="!fixaObs && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('obs')">
+          </ion-icon>
+          <span *ngIf="fixaObs" class="fa-list_title fixado" (click)="fixaCampo('obsTrue')">{{campoObervacao}}
+            <ion-icon *ngIf="!itemBaixado" class="fix-campos-locked" name="lock" (click)="fixaCampo('obsTrue')"></ion-icon></span>
+          <ion-icon *ngIf="fixaObs && !itemBaixado" class="barcode-campos" name="barcode" (click)="lerBarcodeDoCampo('obs')"></ion-icon>
+          <ion-textarea *ngIf="!gravouPatrimonio && !itemBaixado" [(ngModel)]="obs" class="fa-inputgroup text-to-upper" type="text"
+            name="obs" placeholder="Insira as observações aqui" value="{{resposta?.observacao}}">
+          </ion-textarea>
+          <ion-textarea *ngIf="gravouPatrimonio || itemBaixado" disabled [(ngModel)]="obs"
+            class="fa-inputgroup text-to-upper bloqueado" type="text" name="obs"
+            placeholder="Insira as observações aqui" value="{{resposta?.observacao}}">
+          </ion-textarea>
+        </div>
+        <div class="fa-list_control" *ngIf="!itemBaixado">
+
+          <button class="icon-edit-leftt" (click)="buscaHistoricoAnterior('obs')">
+            <ion-icon class="icon-editar-left" name="arrow-dropleft" (click)="buscaHistoricoAnterior('obs')"></ion-icon>
+          </button>
+          <button class="icon-edit" (click)="buscaPatrimonioTags('observacao', obs)">
+            <ion-icon class="icon-editar" name="search"></ion-icon>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>

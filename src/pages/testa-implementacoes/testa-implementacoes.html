@@ -1,0 +1,25 @@
+<ion-header>
+        <ion-navbar>
+          <ion-title>
+            Ionic Blank
+          </ion-title>
+        </ion-navbar>
+      </ion-header>
+      
+      <ion-content>
+      
+          <ion-list>
+            <button detail-none (click)="expandItem(item)" ion-item *ngFor="let item of items">
+              <ion-thumbnail item-start>
+                <img src="http://placehold.it/100">
+              </ion-thumbnail>
+              <h2>{{item.nome1}}</h2>
+              <p>{{item.nome2}}</p>
+              <expandable [expandHeight]="itemExpandHeight" [expanded]="item.expanded">
+                  {{item.nome3}}
+              </expandable>
+              <button ion-button clear item-end>View</button>
+            </button>
+          </ion-list>
+      
+      </ion-content>

@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-fab top right>
+    <button ion-fab (click)="updateConfig()" style="background-color: rgb(145, 113, 113)">
+      <ion-icon name="sync"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-header>
+<ion-content scroll="false">
+  <ion-badge style="z-index: 2;position: absolute; zoom: 1.5">Version 0.0.6</ion-badge>
+  <div class="splash-bg"></div>
+  <div class="splash-info">
+    <div class="splash-logo"></div>
+    <div class="splash-intro">
+     
+    </div>
+  </div>
+  <div padding>
+<form (ngSubmit)="goToSincronizaO()" >
+  <ion-item>
+    <ion-label stacked>Login</ion-label>
+    <ion-input [(ngModel)]="login" name="email" type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+      <ion-label stacked>Senha</ion-label>
+      <ion-input [(ngModel)]="senha" name="senha" type="password"></ion-input>
+    </ion-item>
+    <ion-badge color="danger" *ngIf="!nomeBranco" style="margin: 2.3rem -10rem -10rem 7rem; font-size: large">
+      Usuário e/ou senha em branco</ion-badge>
+    <ion-badge color="danger" *ngIf="!valida" style="margin: 2.3rem -10rem -10rem 7rem; font-size: large">
+      Usuário e/ou senha inválidos</ion-badge>
+    <button ion-button block type="submit"  class="login">ENTRAR</button>
+</form>
+</div>
+</ion-content>

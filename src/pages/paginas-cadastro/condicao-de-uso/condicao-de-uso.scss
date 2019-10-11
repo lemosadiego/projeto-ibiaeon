@@ -1,0 +1,450 @@
+page-condicao-de-uso {
+        .teste1 {
+            width: 320px;
+            float: left;
+    
+            input, textarea {
+                width: 100%;
+                background: none;
+                position: relative;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                outline: 0;
+                &:focus + label {
+                    color: black;
+                    font-size: 70%;
+                    padding: 1px 6px;
+                    z-index: 2;
+                    text-transform: uppercase;
+                }
+            }
+            label {
+                transition: // not padding
+                    background 0.2s,
+                    color 0.2s,
+                    top 0.2s,
+                    bottom 0.2s,
+                    right 0.2s,
+                    left 0.2s;
+                position: absolute;
+                color: #999;
+                padding: 7px 6px;
+            }
+    
+        }
+        
+    
+    
+      input[type="checkbox"] {
+        width: 66px;
+        height: 33px;
+        appearance: none;
+        border: 0;
+        color: #000;
+        cursor: pointer;
+        outline: none;
+        position: relative;
+        box-sizing: border-box;
+        display: block;
+      }
+      .teste {
+        border-bottom: solid 2px #158a9b;
+        font-family: "Montserrat";
+        margin-bottom: 20px;
+        width: 100%;
+        display: flex;
+      }
+    
+      /* line 13, static/scss/_switch.scss */
+    
+      input[type="checkbox"]::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 66px;
+        height: 33px;
+        top: 0;
+        left: 0;
+        background-color: #e4e4e4;
+        z-index: 0;
+        border-radius: 21px;
+      }
+    
+      /* line 26, static/scss/_switch.scss */
+    
+      input[type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        left: 3px;
+        top: 3px;
+        height: 27px;
+        width: 27px;
+        border-radius: 50%;
+        background-color: #ccc;
+        will-change: transform;
+        transition: left 200ms cubic-bezier(0.01, 0.65, 0.23, 1);
+        z-index: 1;
+      }
+    
+      /* line 40, static/scss/_switch.scss */
+    
+      input[type="checkbox"]:checked {
+        background-color: aquamarine;
+      }
+    
+      /* line 43, static/scss/_switch.scss */
+    
+      input[type="checkbox"]:checked::before {
+        left: 35px;
+        background-color: #158a9b;
+      }
+    
+      /* line 3, static/scss/main.scss */
+    
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+    
+      /* line 9, static/scss/main.scss */
+    
+      html,
+      body {
+        height: 100%;
+        font-family: Open Sans;
+      }
+    
+      /* line 14, static/scss/main.scss */
+    
+      main {
+        padding-top: 30px;
+      }
+    
+      /* line 18, static/scss/main.scss */
+    
+      h1,
+      h2,
+      h3 {
+        font-family: "Montserrat";
+      }
+    
+      /* line 21, static/scss/main.scss */
+    
+      .italic {
+        font-style: italic;
+      }
+    
+      /* line 25, static/scss/main.scss */
+    
+      .header {
+        background-color: #158a9b;
+      }
+    
+      /* line 28, static/scss/main.scss */
+    
+      .header_main {
+        padding: 20px 0;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    
+      /* line 32, static/scss/main.scss */
+    
+      .header_title {
+        padding: 20px 0;
+        position: relative;
+      }
+    
+      /* line 36, static/scss/main.scss */
+    
+      .header_title h1 {
+        color: white;
+        font-weight: 400;
+        font-size: 26px;
+      }
+    
+      /* line 42, static/scss/main.scss */
+    
+      .fa-card {
+        border: solid 2px #4aa4be;
+        margin: 15px 0;
+        padding: 10px;
+        text-decoration: none;
+        font-family: "Montserrat";
+        color: #0c5b66;
+        border-radius: 5px;
+        height: 41.5vw;
+        max-height: 180px;
+      }
+    
+      /* line 53, static/scss/main.scss */
+    
+      .fa-card i {
+        color: #4aa4be;
+        font-size: 60px;
+        margin-bottom: 10px;
+      }
+    
+      /* line 59, static/scss/main.scss */
+    
+      .fa-list {
+        margin-top: 30px;
+      }
+    
+      /* line 62, static/scss/main.scss */
+    
+      .fa-list_item {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: solid 1px #eaeaea;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+      }
+    
+      /* line 69, static/scss/main.scss */
+    
+      .fa-list_item .fa-list_title {
+        display: block;
+        font-family: Montserrat;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+    
+      /* line 75, static/scss/main.scss */
+    
+      .fa-list_item .fa-list_status,
+      .fa-list_item .fa-list_code {
+        font-weight: 300;
+      }
+    
+      /* line 80, static/scss/main.scss */
+    
+      .icon-edit {
+        display: block;
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        border: solid 2px #1b8cad;
+        text-align: center;
+        background-color: transparent;
+      }
+    
+      /* line 89, static/scss/main.scss */
+    
+      .icon-edit i {
+        line-height: 40px;
+        color: #1b8cad;
+      }
+    
+      /* line 95, static/scss/main.scss */
+    
+      .fa-footer {
+        margin-top: 30px;
+      }
+    
+      @media (max-width: 600px) {
+        /* line 99, static/scss/main.scss */
+        .fa-footer .btn {
+          display: block;
+          width: 100%;
+          margin-bottom: 10px;
+        }
+      }
+    
+      /* line 107, static/scss/main.scss */
+    
+      .gray {
+        color: #777;
+        font-weight: 300;
+      }
+    
+      /* line 111, static/scss/main.scss */
+    
+      .text-center {
+        text-align: center;
+      }
+    
+      /* line 116, static/scss/main.scss */
+    
+      .fa-form .fa-form_footer {
+        text-align: center;
+      }
+    
+      /* line 119, static/scss/main.scss */
+    
+      .fa-form .btn {
+        margin-top: 15px;
+        margin: 0 ut;
+      }
+    
+      /* line 124, static/scss/main.scss */
+    
+      .fa-inputgroup {
+        border-bottom: solid 2px #158a9b;
+        font-family: "Montserrat";
+        margin-bottom: 20px;
+        display: flex;
+            justify-content: space-between;
+        width: 100%;
+            
+        }
+        
+    
+      .icon-editar {
+        line-height: 40px;
+        color: #1b8cad;
+      }
+    
+      /* line 131, static/scss/main.scss */
+    
+      .fa-inputgroup input[type="text"] {
+        border: 0;
+            outline: 0;
+            width: inherit;
+      }
+    
+      /* line 136, static/scss/main.scss */
+    
+      .fa-inputgroup label,
+      .fa-inputgroup input {
+        padding: 10px 0;
+        font-family: "Montserrat";
+        font-size: 18px;
+            font-weight: 400;
+            width: inherit;
+      }
+    
+      /* line 144, static/scss/main.scss */
+    
+      .btn {
+        display: inline-block;
+        font-family: Montserrat;
+        font-size: 20px;
+        border: solid 2px #4aa4be;
+        color: #158a9b;
+        padding: 10px 40px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+    
+      /* line 155, static/scss/main.scss */
+    
+      .btn-sm {
+        padding: 8px;
+      }
+    
+      /* line 160, static/scss/main.scss */
+    
+      .fa-list_select {
+        position: relative;
+      }
+    
+      /* line 163, static/scss/main.scss */
+    
+      .fa-list_select::after {
+        content: "";
+        position: absolute;
+        top: 7px;
+        right: 0;
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid #1b8cad;
+      }
+    
+      /* line 175, static/scss/main.scss */
+    
+      .fa-list_select select {
+        border: 0;
+        background-color: transparent;
+        -webkit-appearance: none;
+        appearance: none;
+        font-size: 16px;
+        font-family: Montserrat;
+        font-weight: 300;
+        outline: 0;
+        position: relative;
+      }
+    
+      /* line 191, static/scss/main.scss */
+    
+      .fa-search {
+        display: flex;
+      }
+    
+      @media (max-width: 340px) {
+        /* line 194, static/scss/main.scss */
+        .fa-search .controls {
+          display: block;
+          width: 100%;
+          flex: 1;
+        }
+      }
+    
+      /* line 201, static/scss/main.scss */
+    
+      .fa-search a {
+        padding-bottom: 0;
+        line-height: 26px;
+        min-width: 44px;
+        min-height: 44px;
+        text-align: center;
+        vertical-align: top;
+      }
+    
+      /* line 209, static/scss/main.scss */
+    
+      .fa-search a i {
+        line-height: 26px;
+      }
+    
+      /* line 214, static/scss/main.scss */
+    
+      .fa-search .fa-list_select {
+        line-height: 40px;
+        border-bottom: solid 2px #158a9a;
+      }
+    
+      /* line 218, static/scss/main.scss */
+    
+      .fa-search .fa-list_select select {
+        width: 100%;
+        height: 42px;
+        font-weight: 400;
+        font-family: Montserrat;
+        font-size: 18px;
+        color: #757575;
+      }
+    
+      /* line 227, static/scss/main.scss */
+    
+      .fa-search .fa-list_select::after {
+        top: 0;
+        bottom: 0;
+        margin: auto;
+      }
+    
+      /* line 236, static/scss/main.scss */
+    
+      .codes {
+        margin-top: 30px;
+      }
+    
+      /* line 239, static/scss/main.scss */
+    
+      .codes ul {
+        list-style: none;
+        text-align: center;
+      }
+    
+      /* line 243, static/scss/main.scss */
+    
+      .codes li {
+        font-family: Roboto Mono;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+      }
+    }

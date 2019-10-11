@@ -1,0 +1,52 @@
+<ion-header>
+    <ion-navbar class="header_main">
+        <h1 *ngIf="!filtroAtivado" style="color: white">Locais ({{empresa?.length}})</h1>
+        <h1 *ngIf="filtroAtivado" style="color: white">Locais ({{b?.length}})</h1>
+    </ion-navbar>
+  </ion-header>
+
+
+
+<ion-content padding id="page9">
+    
+    <div class="container">
+        <div class="fa-search">
+          <div class="row">
+            <div class="col col-4">
+              <div class="fa-inputgroup teste1" [(ngModel)]="searchName" (ngModelChange)="searchNome()" ngDefaultControl>
+                <input id="name" type="text" name="name">
+                <label for="name">Nome</label>
+              </div>
+            </div>
+            <div class="col col-4">
+              <div class="fa-inputgroup teste1" [(ngModel)]="searchCod" (ngModelChange)="searchCode()" ngDefaultControl>
+                <input type="text" name="codigo">
+                <label for="name">Código</label>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <div class="fa-list">
+          <div  *ngFor="let local of showArray" class="fa-list_item">
+            <div class="fa-list_info">
+              <span class="fa-list_title">{{local?.nome}}</span>
+              <span class="fa-list_code">{{local?.codigo}}</span> 
+            </div>
+            <div class="fa-list_control">
+              <a class="icon-edit" title="Editar" (click)="selecionaLocal(local)">
+                <ion-icon class="icon-editar" name="create"></ion-icon>
+              </a>
+            </div>
+          </div>
+          </div>
+        
+        <div class="fa-footer">
+          <p class="gray text-center">{{showArray?.length}} Locais encontrados</p>
+        </div>
+      </div>
+      <ion-infinite-scroll (ionInfinite)="doInfinite($event)" *ngIf="totalPage < totalData">
+          <ion-infinite-scroll-content loadingSpinner="" loadingText="Loading more data..."></ion-infinite-scroll-content>
+        </ion-infinite-scroll>
+
+</ion-content>

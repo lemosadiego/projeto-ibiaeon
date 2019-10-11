@@ -1,0 +1,83 @@
+<!--
+  Generated template for the PageInventarioRfidPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<!-- <ion-header>
+
+  <ion-navbar>
+    <ion-title style="color: white">Inventário RFID</ion-title>
+  </ion-navbar>
+
+</ion-header> -->
+
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Inventário RFID</h1>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div class="flex screen">
+      <h2>Patrimônio</h2>
+      <!-- <button class="icon-edit" (click)="buscarLocal()">
+        <ion-icon class="icon-editar" name="create"></ion-icon>
+      </button> -->
+      <h2>Local: <strong>{{localEscolhido?.nome}}</strong></h2>
+      
+      <!-- <ion-select id="ion-select" interface="popover">
+        <ion-option selected="true">SELECIONE O LOCAL</ion-option>
+        <ion-option *ngFor="let local of locais; let idx of index" (ionSelect)="localSelecionado(local)">{{local.nome}}
+        </ion-option>
+      </ion-select> -->
+
+    <!-- <button ion-button (click)="fazerInventario()">Fazer inventário</button> -->
+
+    <div class="porcentagem">
+      <div class="numero">{{porcentagemDeLeitura}}%</div>
+      <div *ngIf="!buscaFeita" class="total">Total: 0</div>
+      <div *ngIf="buscaFeita" class="total">Total: {{patrimoniosRetornados[0]?.qtde}}</div>
+    </div>
+
+  </div>
+  <!-- <div *ngIf="buscaFeita">
+    <ion-label>Total de itens encontrados: {{patrimoniosRetornados?.length}} </ion-label>
+    <ng-container *ngFor="let itens of tabelaResultante">
+      <ion-label>{{itens?.NomeGrupo}} <ion-badge color="medium">{{itens?.qtde}}
+        </ion-badge><ion-badge color="danger">{{itens?.qtde_encontrado}}
+        </ion-badge>
+      </ion-label>
+      <ion-label>{{total}}%</ion-label>
+    </ng-container>
+  </div> -->
+  <div class="body-container">
+    <!-- <ion-list inset>
+      <button ion-item (click)="tagSelecionada(tag)">
+        {{ tag }}
+      </button>
+    </ion-list> -->
+    <ion-footer>
+      <div class="flex button-container">
+        <button id="stop" ion-button style="width: 70%;" (click)="tagsEncontradas()">{{verificadorDeTags.length}} Encontrados</button>
+        <button id="start" ion-button style="width: 70%" (click)="tagsNaoEncontradas()">{{totalNaoEncontrado[0]?.qtde}} Ausentes</button>
+        <button id="clean" ion-button style="width: 70%;" (click)="tagExcedentes()">{{tagsExcedentes.length}} Excedentes</button>
+      </div>
+      <!-- <button id="start" ion-button style="width: 33%" (click)="tagsNaoEncontradas()">Desconhecidas ({{tagsDesconhecidas.length}})</button> -->
+      <!-- <button id="clean" ion-button style="width: 33%;" (click)="disconnect()">Parar leitura</button> -->
+      <!-- <button id="clean" ion-button style="width: 33%;" (click)="metodoTeste()">botão p/ testes</button> -->
+      <!-- <button id="start" ion-button style="width: 33%" (click)="startRfid()">INICIAR LEITURA</button>
+      <button id="stop" ion-button style="width: 33%;" (click)="disconnect()">PARAR LEITURA</button>
+      <button id="clean" ion-button style="width: 33%;" (click)="clean()">LIMPAR TELA</button>
+      <button id="clean" ion-button style="width: 33%;" (click)="selectAll()">hsuashua</button>
+      <button id="clean" ion-button style="width: 33%;" (click)="deletarDados()">deletar dados da tabela</button>
+      <button id="clean" ion-button style="width: 33%;" (click)="criartabela()">criar tabela</button> -->
+      <ion-thumbnail class="gifImage" *ngIf="rfidLeitura">
+        <img src="assets/imgs/wifi.gif">
+      </ion-thumbnail>
+      <br><br>
+
+    </ion-footer>
+  </div>
+
+</ion-content>

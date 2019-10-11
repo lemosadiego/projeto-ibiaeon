@@ -1,0 +1,46 @@
+page-replicacao {
+  .replicacao-font {
+    font-size: 170%;
+    margin: 1rem 0.6rem;
+  }
+  .replicacao-input {
+    font-size: 170%;
+  }
+  .rounded {
+    width: 100%;
+    padding: 4px;
+    margin: 0.32rem 1rem;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .icon1 {
+    margin: 0.1rem 10.1rem -1.6rem 0.3rem;
+    zoom: 2.4;
+  }
+  .icon2 {
+    margin: 0.1rem 10.1rem -1.6rem 0.5rem;
+    zoom: 2.4;
+  }
+  .icon1:active {
+    animation: effect_dylan 0.8s ease-out;
+  }
+  .icon2:active {
+    animation: effect_dylan 0.8s ease-out;
+  }
+}
+@keyframes effect_dylan {
+  50% {
+    transform: scale(2.5, 2.5);
+    opacity: 0;
+  }
+  99% {
+    transform: scale(0.001, 0.001);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.001, 0.001);
+    opacity: 1;
+  }
+}

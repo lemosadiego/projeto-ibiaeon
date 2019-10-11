@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <ion-buttons start left>
+      <button ion-button menuToggle>
+        <ion-icon name="menu" style="color: white"></ion-icon>
+      </button>
+    </ion-buttons>
+    <h1  style="color: white">Menu Principal</h1>
+  </ion-navbar>
+  
+</ion-header>
+<ion-content padding id="page7">
+  <div class="container">
+    <div class="row h-100">
+      <div class="col col-6" on-click="goToInventario()">
+        <a class="fa-card d-flex flex-column align-items-center justify-content-center w-100 h-100">
+          <ion-icon class="icon-color" name="barcode" style="zoom: 3"></ion-icon>
+          <span class="letra-color">Inventário</span>
+        </a>
+      </div>
+      <div class="col col-6" on-click="goToConfig()">
+        <a class="fa-card d-flex flex-column align-items-center justify-content-center w-100 h-100">
+          <ion-icon class="icon-color" name="construct" style="zoom: 3"></ion-icon>
+          <span class="letra-color">Configurações</span>
+        </a>
+      </div>
+      <div class="col col-6" on-click="goToCadastros()">
+        <a class="fa-card d-flex flex-column align-items-center justify-content-center w-100 h-100">
+          <ion-icon class="icon-color" name="copy" style="zoom: 3"></ion-icon>
+          <span class="letra-color">Cadastros</span>
+        </a>
+      </div>
+      <div class="col col-6" on-click="sincronizacao()">
+        <a class="fa-card d-flex flex-column align-items-center justify-content-center w-100 h-100">
+          <ion-icon class="icon-color" name="sync" style="zoom: 3"></ion-icon>
+          <span class="letra-color">Sincronizar</span>
+        </a>
+      </div>
+      <div class="col col-6" on-click="inventarioRFID()">
+        <a class="fa-card d-flex flex-column align-items-center justify-content-center w-100 h-100">
+          <ion-icon class="icon-color" name="qr-scanner" style="zoom: 3"></ion-icon>
+          <span class="letra-color">Inventário RFID</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</ion-content>

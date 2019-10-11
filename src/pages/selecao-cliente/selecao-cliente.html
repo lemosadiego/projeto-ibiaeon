@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-navbar class="header_main">
+      <h1 style="color: white">Seleção do cliente</h1>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list radio-group>
+    <h4>Selecione um cliente abaixo para executar o serviço:</h4>
+    <ion-item *ngFor="let cliente of clientesRetornados">
+      <ion-label>{{cliente.nome}}</ion-label>
+      <ion-radio #teste (ionSelect)="selecionaCliente(teste.checked, cliente)"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <button block ion-button id="clientes-button5" ion-button color="positive" (click)="verificaCheck()">
+    Confirmar escolha
+  </button>
+
+  <!--  <ion-list inset>
+        <ion-item *ngFor="let lista of filialData">
+          <p><b>ID:</b> {{lista.id}}</p>
+          <p><b>CÓDIGO:</b> {{lista.codigo}}</p>
+          <p><b>NOME:</b> {{lista.nome}}</p>
+          <p><b>STATUS:</b> {{lista.flagStatusAtivo}}</p>
+          <p><b>SITUAÇÃO:</b> {{lista.situacao}}</p>
+          <p><b>CONFIG LOGIN:</b> {{lista.usuarioConfigLogin}}</p>
+          <p><b>PDA LOGIN:</b> {{lista.usuarioPdaLogin}}</p>
+          <p><b>DATA INSERÇÃO:</b> {{lista.dataInsercao}}</p>
+          <p><b>DATA ALTERAÇÃO:</b> {{lista.dataAlteracao}}</p>
+        </ion-item>
+      </ion-list>-->
+</ion-content>

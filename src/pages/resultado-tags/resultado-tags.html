@@ -1,0 +1,22 @@
+<!--
+  Generated template for the ResultadoTagsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>resultado-tags</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <div *ngFor="let item of detalhesItem">
+    <ion-label>Nome: {{item.nome}}</ion-label>
+    <ion-label>Código: {{item.codigo}}</ion-label>
+  </div>
+
+</ion-content>

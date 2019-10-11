@@ -1,0 +1,94 @@
+<ion-header>
+  <ion-navbar class="header_main">
+      <h1 style="color: white">Filiais ({{empresa?.length}})</h1>
+  </ion-navbar>
+</ion-header>
+
+
+
+<ion-content padding id="page9">
+
+  <div class="container">
+    <div class="fa-search">
+      <div class="row">
+        <div class="col col-4">
+          <div class="fa-inputgroup teste1" [(ngModel)]="searchName" (ngModelChange)="searchNome()" ngDefaultControl>
+            <input id="name" type="text" name="name">
+            <label for="name">Nome</label>
+          </div>
+        </div>
+        <div class="col col-4">
+          <div class="fa-inputgroup teste1" [(ngModel)]="searchCod" (ngModelChange)="searchCode()" ngDefaultControl>
+            <input type="text" name="codigo">
+            <label for="name">Código</label>
+          </div>
+        </div>
+        <div class="col col-4">
+          <div class="fa-list_select">
+            <select [(ngModel)]="searchSt" (ngModelChange) = "searchStatus()" ngDefaultControl>
+              <option value="Ativo" >Ativo</option>
+              <option value="Inativo">Inativo</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fa-list">
+      <div  *ngFor="let filial of showArray" class="fa-list_item">
+        <div class="fa-list_info">
+          <span class="fa-list_title">{{filial.nome}}</span>
+          <span class="fa-list_code">{{filial.codigo}}</span> •
+          <span class="fa-list_status">{{filial.status}}</span>
+        </div>
+        <div class="fa-list_control">
+          <a class="icon-edit" title="Editar" (click)="selecionaFilial(filial)">
+            <ion-icon class="icon-editar" name="create"></ion-icon>
+          </a>
+        </div>
+      </div>
+      </div>
+    
+    <div class="fa-footer">
+      <p class="gray text-center">{{showArray?.length}} filiais encontradas</p>
+    </div>
+  </div>
+
+</ion-content>
+
+
+  <!-- <ion-row class="cor-filtro">
+    <ion-col col-3>
+      <ion-item class="cor-filtro" [(ngModel)] = "searchCod" (ngModelChange) = "searchCode()">
+        <ion-label floating><b>Código</b></ion-label>
+        <ion-input type="search"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-5>
+      <ion-item class="cor-filtro" [(ngModel)] = "searchName" (ngModelChange) = "searchNome()">
+        <ion-label floating><b>Nome</b></ion-label>
+        <ion-input type="search"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-3>
+      <ion-item class="cor-filtro">
+        <ion-label floating>Status</ion-label>
+        <ion-select [(ngModel)] = "searchSt" (ngModelChange) = "searchStatus()">
+          <ion-option value="Ativo">Ativo</ion-option>
+          <ion-option value="Inativo">Inativo</ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-item class="cor-header">
+      <ion-label color="black">Código</ion-label>
+      <ion-label color="black">Nome</ion-label>
+      <ion-label color="black">Status</ion-label>
+    </ion-item>
+    <ion-item *ngFor="let filial of showArray" (click)="selecionaFilial(filial)">
+        <ion-label color="black">{{filial.codigo}}</ion-label>
+        <ion-label color="black">{{filial.nome}}</ion-label>
+        <ion-label color="black">{{filial.status}}</ion-label>
+    </ion-item>
+  </ion-row>
+  <h4 class="local-text">Total encontrado: {{showArray?.length}}</h4>-->

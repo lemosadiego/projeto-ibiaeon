@@ -1,0 +1,27 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Excedentes</h1>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex screen">
+      <h2>{{tagsExcedentes?.length}} Excedentes</h2>
+
+      <h2>Local: <strong>{{local?.nome}}</strong></h2>
+      <div class="detalhes-container flex" *ngFor="let tags of tagsExcedentes; let idx = index">
+        <p><span><strong>Item: </strong></span><span>{{idx+1}}</span></p>
+        <p><span><strong>Espécie: </strong></span><span>{{tags?.nome}}</span></p>
+        <p><span><strong>Código: </strong></span><span>{{tags?.codigo}}</span></p>
+        <p><span><strong>Local: </strong></span><span>{{tags?.NomeLocal}}</span></p>
+        <p><span><strong>Marca: </strong></span><span>{{tags?.marca}}</span></p>
+        </div>
+       
+
+      <!-- <div *ngFor="let tags of tagsExcedentes">
+        <ion-label>Item: {{tags.Grupo}}</ion-label>
+        <ion-label>código: {{tags.codigo}}</ion-label>
+      </div> -->
+  
+  </div>
+</ion-content>

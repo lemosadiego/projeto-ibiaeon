@@ -1,0 +1,45 @@
+page-configuracoes {
+
+    .toolbar-background {
+        background-color: rgb(7, 38, 43);
+    }
+    #fabIcon1{
+        position: relative;
+      }
+    
+    html, body {
+        height: 100%;
+    }
+    
+    h1, h2, h3 {
+        font-family: 'Montserrat'
+    }
+    
+    .header {
+        background-color: #158A9B;
+    }
+    .header_main {
+        padding: 20px;
+        background-color: rgba(0,0,0,.7);
+    }
+    .header_title {
+        padding: 20px;
+        position: relative;
+    }
+    .header_rfid {
+        background-color: #315f88;
+        padding: 7px;
+        position: relative;
+    }
+    .header_rfid h1 {
+        color: white;
+        font-weight: 400;
+        font-size: 26px;
+    }
+    
+    .header_title h1 {
+        color: white;
+        font-weight: 400;
+        font-size: 26px;
+    }
+}

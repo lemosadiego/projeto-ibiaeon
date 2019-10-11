@@ -1,0 +1,62 @@
+.flex {
+  display: flex;
+}
+
+.screen {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+
+  .porcentagem {
+
+    .numero {
+      font-size: 6em;
+    }
+
+    .total {
+      font-size: 2em;
+      margin-left: 110px;
+    }
+  }
+}
+
+.body-container {
+  border: none;
+}
+
+.button-container {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-footer {
+  border: none;
+  // background: yellow;
+}
+page-page-inventario-rfid {
+  .gifImage {
+    display: inline-block;
+    text-overflow: ellipsis;
+    text-align: center;
+    margin: 0.4rem 0.2rem;
+    padding: 0 1.1em;
+    border-radius: 2px;
+    height: 1.5rem;
+    width: 8.2rem;
+  }
+  .icon-edit {
+    display: block;
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    border: solid 2px #1b8cad;
+    text-align: center;
+    background-color: transparent;
+  }
+  .icon-editar {
+    line-height: 40px;
+    color: #1B8CAD
+  }
+}

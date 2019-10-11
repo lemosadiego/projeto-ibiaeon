@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-navbar class="header_main">
+        <h1 style="color: white">Centro de custos ({{empresa?.length}})</h1>
+    </ion-navbar>
+  </ion-header>
+
+
+
+
+<ion-content padding id="page9">
+    
+    <div class="container">
+        <div class="fa-search">
+          <div class="row">
+            <div class="col col-4">
+              <div class="fa-inputgroup teste1" [(ngModel)]="searchName" (ngModelChange)="searchNome()" ngDefaultControl>
+                <input id="name" type="text" name="name">
+                <label for="name">Nome</label>
+              </div>
+            </div>
+            <div class="col col-4">
+              <div class="fa-inputgroup teste1" [(ngModel)]="searchCod" (ngModelChange)="searchCode()" ngDefaultControl>
+                <input type="text" name="codigo">
+                <label for="name">Código</label>
+              </div>
+            </div>
+            <div class="col col-4">
+              <div class="fa-list_select">
+                <select [(ngModel)]="searchSt" (ngModelChange) = "searchStatus()" ngDefaultControl>
+                  <option value="Ativo" >Ativo</option>
+                  <option value="Inativo">Inativo</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fa-list">
+          <div  *ngFor="let centroCusto of showArray" class="fa-list_item">
+            <div class="fa-list_info">
+              <span class="fa-list_title">{{centroCusto.nome}}</span>
+              <span class="fa-list_code">{{centroCusto.codigo}}</span> •
+              <span class="fa-list_status">{{centroCusto.status}}</span>
+            </div>
+            <div class="fa-list_control">
+              <a class="icon-edit" title="Editar" (click)="selecionaCentroCusto(centroCusto)">
+                <ion-icon class="icon-editar" name="create"></ion-icon>
+              </a>
+            </div>
+          </div>
+          </div>
+        
+        <div class="fa-footer">
+          <p class="gray text-center">{{showArray?.length}} Centros de custo encontrados</p>
+        </div>
+      </div>
+
+</ion-content>

@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-navbar class="header_main">
+      <h1 style="color: white">Ausentes</h1>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content>
+    <div class="flex screen">
+        <h2>{{totalAusente}} Ausentes</h2>
+  
+        <h2>Local: <strong>Sala de Reunião</strong></h2>
+  
+        <ul class="flex" *ngFor="let tags of tabelaResultante">
+          <ng-container *ngIf="tags?.qtde > 0">
+            <li (click)="detalhesTags(tags)" class="flex"><span>{{tags.NomeGrupo}}</span><span>{{tags?.qtde}}</span></li>
+          </ng-container>
+          </ul>
+    </div>
+  </ion-content>

@@ -1,0 +1,33 @@
+<ion-menu [content]="conteudo" *ngIf="statusSwipe">
+  <ion-header>
+    <ion-navbar class="header_main">
+        <h1 style="color: white">Menu usuário</h1>
+    </ion-navbar>
+  </ion-header>
+  <ion-content id="side-menu21">
+    <ion-item id="cabecalho-menu" class="cabecalho-menu">
+      <div>
+        <ion-avatar item-start>
+          <!-- ion-avatar transforma a foto em
+              formato de avatar-->
+          <img src="assets/img/avatar-padrao.jpg" menuClose="" on-click="goToPerfil()">
+        </ion-avatar>
+      </div>
+      <h2 id="usuarioLogado"></h2>
+      <p id="clienteLogado"></p>
+    </ion-item>
+    <ion-list id="menu-list1">
+      <ion-item color="blue" menuClose="" on-click="goToPerfil()" id="menu-list-item1">
+        Editar usuário
+      </ion-item>
+      <ion-item menuClose="" on-click="goToSelecao()" id="menu-list-item2">
+        <button ion-button>Selecionar outro cliente</button>
+      </ion-item>
+      <ion-item menuClose="" on-click="goToLogin()" id="menu-list-item2">
+        <button color="danger" ion-button>Sair p/ Login</button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="rootPage" main #conteudo swipeBackEnabled="false"></ion-nav>

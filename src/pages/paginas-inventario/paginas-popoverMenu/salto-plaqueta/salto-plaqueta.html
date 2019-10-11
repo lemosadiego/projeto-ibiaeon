@@ -1,0 +1,20 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title>Salto de plaquetas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-label class="salto-plaqueta-font">Início</ion-label>
+  <ion-input type="text" class="replicacao-input rounded" [(ngModel)]="inicio" value=""></ion-input>
+  <ion-label class="salto-plaqueta-font">Fim</ion-label>
+  <ion-input type="text" class="replicacao-input rounded" [(ngModel)]="fim" value=""></ion-input><br><br>
+  <button ion-button large block (click)="saltoPlaquetaClick()">BUSCAR</button><br><br>
+  <ion-list *ngFor="let salto of listSaltos">
+    <ion-item>
+      <ion-label>{{salto}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

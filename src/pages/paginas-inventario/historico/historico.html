@@ -1,0 +1,22 @@
+<ion-header>
+    <ion-navbar class="header_main">
+        <h1 style="color: white">Histórico</h1>
+    </ion-navbar>
+  </ion-header>
+
+
+<ion-content padding id="page9">
+
+  <ion-row>
+    <ion-item class="cor-header">
+      <ion-label color="black">Usuário</ion-label>
+      <ion-label color="black">Ação</ion-label>
+      <ion-label color="black">Data/Hora</ion-label>
+    </ion-item>
+    <ion-item *ngFor="let historico of listaHistorico">
+      <ion-label color="black">{{historico.usuario}}</ion-label>
+      <ion-label id="acao"  color="black">{{historico.acao}}</ion-label>
+      <ion-label id="datahora" color="black">{{historico.dataHora}}</ion-label>
+    </ion-item>
+  </ion-row>
+</ion-content>

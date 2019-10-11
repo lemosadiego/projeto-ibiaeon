@@ -1,0 +1,36 @@
+.flex {
+    display: flex;
+  }
+  
+.screen {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    width: 100vw;
+    // background: yellowgreen;
+    margin-left: 0;
+
+    h2 {
+        margin-top: 25px;
+    }
+
+    .detalhes-container {
+        flex-direction: column;
+        width: inherit;
+        border-bottom: 1px solid gray;
+        padding: 15px 0;
+
+        &:first-child {
+            border-top: 1px solid gray;
+        }
+
+        p {
+            list-style: none;
+            padding: 10px;
+            width: 90%;
+            margin: 5px 0;
+            justify-content: space-between;
+        }
+    }
+}

@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar class="header_main">
+      <h1 style="color: white">Perfil</h1>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-item no-lines>
+    <div class="avatar-wrapper">
+      <ion-avatar>
+        <img src="assets/img/avatar-padrao.jpg">
+        <!--com o [binding no src ele consegue pegar o valor de 
+        avatar dinamicamente-->
+      </ion-avatar>
+      <!--  <button (click)="tiraFoto()" class="btn-tirar-foto" ion-button icon-only round>
+        <ion-icon name="camera"></ion-icon>
+      </button>-->
+    </div>
+  </ion-item>
+  <ion-card>
+    <!-- da a impressão que o conteudi esta dentro de um catão-->
+    <ion-item>
+      <ion-icon name="contact" item-left></ion-icon> Usuário:
+      {{ usuarioLogado?.nome }}
+    </ion-item>
+
+    <ion-item>
+      <ion-icon name="home" item-left></ion-icon>
+      {{ clienteLogado?.nome }}
+    </ion-item>
+  </ion-card>
+  <ion-card>
+    <ion-item>
+        <ion-icon class="icon-editar" name="create" (click)="alterarSenha()"></ion-icon>
+        <span class="fa-list_title">Alterar senha</span>
+      
+    </ion-item>
+  </ion-card>
+
+</ion-content>

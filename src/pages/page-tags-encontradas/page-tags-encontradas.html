@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Encontrados</h1>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex screen">
+      <h2>{{tagsEncontradas?.length}} Encontrados</h2>
+
+      <h2>Local: <strong>{{local?.nome}}</strong></h2>
+
+      <ul class="flex" *ngFor="let tags of tagsEncontradas">
+        <li (click)="detalhesTags(tags)" class="flex"><span>{{tags.Grupo}}</span><span>{{tags?.qtde}}</span></li>
+      </ul>
+
+  
+  </div>
+</ion-content>

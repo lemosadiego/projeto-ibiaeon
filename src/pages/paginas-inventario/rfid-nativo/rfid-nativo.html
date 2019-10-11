@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Leitura RFID</h1>
+  </ion-navbar>
+  <div class="header_rfid">
+    <ion-fab top right>
+      <ion-item style="background-color: transparent">
+        <ion-toggle #toggle color="positive" (ionChange)="tipoDeLeitura(toggle.checked)" style="zoom: 1.1" checked>
+        </ion-toggle>
+      </ion-item>
+    </ion-fab>
+    <h1>Leitura {{tipoLeitura}}</h1>
+  </div>
+</ion-header>
+
+<ion-content padding>
+  <ion-list inset>
+    <button ion-item *ngFor="let tag of tags" (click)="tagSelecionada(tag)">
+      {{ tag }}
+    </button>
+  </ion-list>
+  <ion-footer>
+    <button id="start" ion-button style="width: 33%" (click)="startRfid()">INICIAR LEITURA</button>
+    <button id="stop" ion-button style="width: 33%;" (click)="disconnect()">PARAR LEITURA</button>
+    <button id="clean" ion-button style="width: 33%;" (click)="clean()">LIMPAR TELA</button>
+    <ion-thumbnail class="gifImage" *ngIf="rfidLeitura">
+      <img src="assets/imgs/wifi.gif">
+    </ion-thumbnail>
+    <br><br>
+
+  </ion-footer>
+</ion-content>

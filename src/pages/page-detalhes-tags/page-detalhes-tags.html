@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Detalhes</h1>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex screen" *ngIf="page == 'tagsNaoEncontradas'">
+    <h2>Detalhes</h2>
+
+    <h2>Local: <strong>{{local?.nome}}</strong></h2>
+    <div class="detalhes-container flex" *ngFor="let tags of detalhesItem; let idx = index">
+      <p><span><strong>Item: </strong></span><span>{{idx+1}}</span></p>
+      <p><span><strong>Espécie: </strong></span><span>{{tags?.nome}}</span></p>
+      <p><span><strong>Código: </strong></span><span>{{tags?.codigo}}</span></p>
+    </div>
+  </div>
+  <div class="flex screen" *ngIf="page == 'tagsEncontradas'">
+    <h2>Detalhes</h2>
+
+    <h2>Local: <strong>{{local?.nome}}</strong></h2>
+    <h2>Item: <strong>{{detalhesTags?.Grupo}}</strong></h2>
+
+    <ng-container *ngIf="detalhesTags.length != undefined">
+      <div class="detalhes-container flex" *ngFor="let tags of detalhesTags; let idx = index">
+        <p><span><strong>Item: </strong></span><span>{{idx+1}}</span></p>
+        <p><span><strong>Espécie: </strong></span><span>{{tags?.nome}}</span></p>
+        <p><span><strong>Código: </strong></span><span>{{tags?.codigo}}</span></p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="detalhesTags.length == undefined">
+      <div class="detalhes-container flex">
+        <p><span><strong>Item: </strong></span><span>1</span></p>
+        <p><span><strong>Espécie: </strong></span><span>{{detalhesTags?.nome}}</span></p>
+        <p><span><strong>Código: </strong></span><span>{{detalhesTags?.codigo}}</span></p>
+      </div>
+    </ng-container>
+  </div>
+</ion-content>

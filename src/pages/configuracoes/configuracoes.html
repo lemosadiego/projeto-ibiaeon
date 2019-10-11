@@ -1,0 +1,149 @@
+<ion-header>
+  <ion-navbar class="header_main">
+    <h1 style="color: white">Configurações</h1>
+  </ion-navbar>
+  <ion-fab *ngIf="paginaInventario" top left>
+    <button id="fabIcon" style="background-color: transparent" (click)="voltarInventario()">
+      <ion-icon name="arrow-round-back"></ion-icon>
+    </button>
+  </ion-fab>
+  <ion-fab top right>
+    <button ion-fab>
+      <ion-icon name="construct"></ion-icon>
+    </button>
+    <ion-fab-list>
+      <button ion-fab (click)="alterarConfig()">
+        <ion-icon name="done-all"></ion-icon>
+      </button>
+      <button ion-fab>
+        <ion-icon name="sync"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+</ion-header>
+
+<ion-content padding>
+  <h4>Selecione o tipo de revisão</h4>
+  <ion-list radio-group [(ngModel)]="revisoes">
+    <ion-item id="rev-completa">
+      <ion-label>REVISÃO COMPLETA</ion-label>
+      <ion-radio value="completa" (ionSelect)="revSelecionada(revisoes)"></ion-radio>
+    </ion-item>
+    <ion-item id="rev-rapida">
+      <ion-label>REVISÃO RÁPIDA</ion-label>
+      <ion-radio value="rapida" (ionSelect)="revSelecionada(revisoes)"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <h4>Máscara de entrada</h4>
+  <ion-item>
+    <ion-label>{{status}}</ion-label>
+    <ion-toggle #toggle checked="true" (ionChange)="pegaSelecionado(toggle.checked)"></ion-toggle>
+  </ion-item>
+  <ion-item *ngIf="ativo">
+    <ion-label><b>Máscara:</b></ion-label>
+    <ion-input type="number" [(ngModel)]="mascara"></ion-input>
+  </ion-item>
+  <h4>Fotos</h4>
+  <ion-badge style="float:right">FOTOS POR ITEM: {{numFotos}}</ion-badge>
+  <ion-item>
+    <ion-range min="0" max="100" [(ngModel)]="numFotos" pin="true">
+      <ion-label range-left>0</ion-label>
+      <ion-label range-right>100</ion-label>
+    </ion-range>
+  </ion-item>
+  <h4>Nomes de campos auxiliares</h4>
+  <ion-row>
+    <ion-col col-4>
+      <ion-item>
+        <ion-label floating><b>AUX1</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux1" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item>
+        <ion-label floating><b>AUX2</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux2" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item>
+        <ion-label floating><b>AUX3</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux3" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item >
+        <ion-label floating><b>AUX4</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux4" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col col-4>
+      <ion-item >
+        <ion-label floating><b>AUX5</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux5" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item >
+        <ion-label floating><b>AUX6</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux6" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item >
+        <ion-label floating><b>AUX7</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux7" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+      <ion-item >
+        <ion-label floating><b>AUX8</b></ion-label>
+        <ion-input type="text" [(ngModel)]="aux8" maxlength="100"> </ion-input>
+      </ion-item>
+    </ion-col>
+  </ion-row>
+  <h4>Preenchimento Obrigatório</h4>
+
+  <form id="clientes-form1" inset>
+    <ion-row *ngFor="let itens of itemObrigatorio; let j = index">
+      <ion-col col-6>
+        <ion-item id="clientes-checkbox-obg{{j}}" no-lines>
+          <ion-label>
+            <p>{{ itens }}</p>
+          </ion-label>
+          <ion-checkbox #check name="teste" (click)="checkbox(itens, check.checked)"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <h4>Avisa alteração se fixado</h4>
+  </form>
+  <form id="clientes-form1" inset>
+    <ion-row *ngFor="let itens of avisaAlteracao; let k = index">
+      <ion-col col-6>
+        <ion-item id="clientes-checkbox-aviso{{k}}" no-lines>
+          <ion-label>
+            <p>{{ itens }}</p>
+          </ion-label>
+          <ion-checkbox name="teste"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <h4>Bloqueia Alteração ao revisar</h4>
+  </form>
+  <form id="clientes-form1" inset>
+    <ion-row *ngFor="let itens of bloqueiaAlteracao; let l = index">
+      <ion-col col-6>
+        <ion-item id="clientes-checkbox-bloq{{l}}" no-lines>
+          <ion-label>
+            <p>{{ itens }}</p>
+          </ion-label>
+          <ion-checkbox name="teste"></ion-checkbox>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+  </form>
+
+</ion-content>

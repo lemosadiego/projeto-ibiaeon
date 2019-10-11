@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-navbar class="header_main">
+        <h1 style="color: white">Patrimônios encontrados({{tags.length}})</h1>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <div class="container">
+        <div class="fa-list">
+            <div *ngFor="let local of tags" class="fa-list_item">
+                <div class="fa-list_info">
+                    <span class="fa-list_title">{{local.Filial}}</span>
+                    <span class="fa-list_code">{{local.codigo}}</span> •
+                    <span class="fa-list_status">{{local.incorporacao}}</span>
+                    <span class="fa-list_title">{{local.descricao}}</span>
+                    <span class="fa-list_code">{{local.Especie}}</span>
+                </div>
+                <div class="fa-list_control">
+                    <a class="icon-edit" title="Editar" (click)="retornaCodigo(local)">
+                        <ion-icon class="icon-editar" name="create"></ion-icon>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</ion-content>

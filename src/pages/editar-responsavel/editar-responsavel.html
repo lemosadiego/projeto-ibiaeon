@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar class="header_main">
+        <h1 style="color: white">Editar responsável</h1>
+    </ion-navbar>
+  </ion-header>
+<ion-content padding id="page13">
+    <div class="container" style="margin-top: 15px">
+        <div class="teste">
+          <ion-item no-lines>
+            <ion-label>
+              Código: {{ responsavelSelecionado.codigo}}
+            </ion-label>
+          </ion-item>
+        </div>
+        <div class="teste">
+          <ion-item no-lines>
+            <ion-label>
+              Nome:
+            </ion-label>
+            <ion-input type="text" [(ngModel)] = "responsavelAlterado" placeholder="" value="{{ responsavelSelecionado.nome}}"></ion-input>
+          </ion-item>
+        </div>
+        <div class="teste">
+          <ion-item no-lines>
+            <ion-label>
+              Status: {{responsavelSelecionado?.status}}
+            </ion-label>
+            <ion-toggle #toggle *ngIf="toggleStatus" color="positive" checked="true" (ionChange)="mudaStatus(toggle.checked)"></ion-toggle>
+            <ion-toggle #toggle *ngIf="!toggleStatus" color="positive" checked="false" (ionChange)="mudaStatus(toggle.checked)"></ion-toggle>
+          </ion-item>
+        </div>
+        <div class="fa-form_footer">
+          <button class="btn"  (click)="salvaAlteracao()">Salvar</button>
+        </div>
+    </div>
+</ion-content>
